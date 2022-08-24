@@ -91,6 +91,7 @@ public class MasteryTaskOneDesignTests {
 
     @Test
     void mt1Design_getClassDiagram_containsPublishingStatusItemFields() {
+
         assertClassDiagramTypeContainsMember(
                 content, "PublishingStatusItem", "@DynamoDBHashKey\\s*publishingRecordId\\s*:\\s*String");
         assertClassDiagramTypeContainsMember(

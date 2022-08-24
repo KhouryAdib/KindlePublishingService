@@ -1,5 +1,6 @@
 package com.amazon.ata.kindlepublishingservice.converters;
 
+import com.amazon.ata.kindlepublishingservice.models.requests.RemoveBookFromCatalogRequest;
 import com.amazon.ata.recommendationsservice.types.BookGenre;
 import com.amazon.ata.kindlepublishingservice.models.requests.SubmitBookForPublishingRequest;
 import com.amazon.ata.kindlepublishingservice.publishing.BookPublishRequest;
@@ -32,5 +33,7 @@ public class BookPublishRequestConverter {
             .withAuthor(request.getAuthor())
             .build();
     }
+
+
 
 }

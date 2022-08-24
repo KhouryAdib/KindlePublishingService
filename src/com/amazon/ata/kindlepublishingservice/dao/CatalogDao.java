@@ -1,7 +1,10 @@
 package com.amazon.ata.kindlepublishingservice.dao;
 
 import com.amazon.ata.kindlepublishingservice.dynamodb.models.CatalogItemVersion;
+import com.amazon.ata.kindlepublishingservice.dynamodb.models.PublishingStatusItem;
 import com.amazon.ata.kindlepublishingservice.exceptions.BookNotFoundException;
+import com.amazon.ata.kindlepublishingservice.models.Book;
+import com.amazon.ata.kindlepublishingservice.models.response.RemoveBookFromCatalogResponse;
 import com.amazon.ata.kindlepublishingservice.publishing.KindleFormattedBook;
 import com.amazon.ata.kindlepublishingservice.utils.KindlePublishingUtils;
 
@@ -42,6 +45,51 @@ public class CatalogDao {
         return book;
     }
 
+
+    public RemoveBookFromCatalogResponse removeBookFromCatalog(String bookId) {
+     /*-   CatalogItemVersion book = new CatalogItemVersion();
+        book.setBookId(bookId);
+
+        DynamoDBQueryExpression<CatalogItemVersion> queryExpression = new DynamoDBQueryExpression()
+                .withHashKeyValues(book)
+                .withScanIndexForward(false)
+                .withLimit(1);
+
+        List<CatalogItemVersion> results = dynamoDbMapper.query(CatalogItemVersion.class, queryExpression);
+
+        results.get(0).setInactive(true);
+
+        dynamoDbMapper.save(results.get(0));
+
+        return RemoveBookFromCatalogResponse.builder()
+                .withBook()
+                .build();
+
+
+      */
+        CatalogItemVersion book = getLatestVersionOfBook(bookId);
+
+        if(book.isInactive()){
+            throw new BookNotFoundException("Book already removed");
+        }
+
+
+        CatalogItemVersion item = new CatalogItemVersion();
+        item.setInactive(true);
+        item.setBookId(bookId);
+        item.setAuthor(book.getAuthor());
+        item.setGenre(book.getGenre());
+        item.setText(book.getText());
+        item.setTitle(book.getTitle());
+        item.setVersion(book.getVersion());
+        item.setBookId(bookId);
+        dynamoDbMapper.save(item);
+
+        return RemoveBookFromCatalogResponse.builder().withPublishingRecordId(bookId).build();
+
+
+    }
+
     // Returns null if no version exists for the provided bookId
     private CatalogItemVersion getLatestVersionOfBook(String bookId) {
         CatalogItemVersion book = new CatalogItemVersion();
@@ -54,8 +102,9 @@ public class CatalogDao {
 
         List<CatalogItemVersion> results = dynamoDbMapper.query(CatalogItemVersion.class, queryExpression);
         if (results.isEmpty()) {
-            return null;
+            throw new BookNotFoundException("Book not found");
         }
         return results.get(0);
     }
+
 }

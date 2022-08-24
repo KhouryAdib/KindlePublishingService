@@ -1,9 +1,9 @@
 package com.amazon.ata.kindlepublishingservice.dagger;
 
-import com.amazon.ata.kindlepublishingservice.activity.GetBookActivity;
-import com.amazon.ata.kindlepublishingservice.activity.GetPublishingStatusActivity;
-import com.amazon.ata.kindlepublishingservice.activity.RemoveBookFromCatalogActivity;
-import com.amazon.ata.kindlepublishingservice.activity.SubmitBookForPublishingActivity;
+import com.amazon.ata.kindlepublishingservice.controllers.activity.GetBookActivity;
+import com.amazon.ata.kindlepublishingservice.controllers.activity.GetPublishingStatusActivity;
+import com.amazon.ata.kindlepublishingservice.controllers.activity.RemoveBookFromCatalogActivity;
+import com.amazon.ata.kindlepublishingservice.controllers.activity.SubmitBookForPublishingActivity;
 import dagger.Component;
 
 import javax.inject.Singleton;

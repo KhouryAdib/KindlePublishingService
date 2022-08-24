@@ -1,1 +1,23 @@
 PARTICIPANTS: use this file for creating the remove book from catalog diagram in mastery task 01
+@startuml
+
+class CatalogDao{
+* DynamoDBMapper dynamoDbMapper
+CatalogItemVersion getBookFromCatalog(String bookId)
+}
+
+class RemoveBookFromCatalogActivity{
+    removeBookFromCatalog
+    +execute(RemoveBookFromCatalogRequest request)
+    }
+
+    CatalogDao <-> RemoveBookFromCatalogActivity
+    CatalogDao->DynamoDBMapper
+
+class BookNotFoundException
+
+
+
+    catalogDao -> BookNotFoundException
+class RemoveBookFromCatalogResponse
+@enduml

@@ -1,4 +1,4 @@
-package com.amazon.ata.kindlepublishingservice.activity;
+package com.amazon.ata.kindlepublishingservice.controllers.activity;
 
 import com.amazon.ata.kindlepublishingservice.clients.RecommendationsServiceClient;
 import com.amazon.ata.kindlepublishingservice.converters.CatalogItemConverter;

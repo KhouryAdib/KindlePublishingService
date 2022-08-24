@@ -1,7 +1,7 @@
 package com.amazon.ata.kindlepublishingservice.controllers;
 
 import com.amazon.ata.kindlepublishingservice.*;
-import com.amazon.ata.kindlepublishingservice.activity.GetBookActivity;
+import com.amazon.ata.kindlepublishingservice.controllers.activity.GetBookActivity;
 import com.amazon.ata.kindlepublishingservice.dagger.ApplicationComponent;
 import com.amazon.ata.kindlepublishingservice.models.*;
 import com.amazon.ata.kindlepublishingservice.models.requests.GetBookRequest;

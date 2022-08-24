@@ -24,6 +24,13 @@ public class RemoveBookFromCatalogRequest {
     }
 
     @Override
+    public String toString() {
+        return "RemoveBookFromCatalogRequest{" +
+                "bookId='" + bookId + '\'' +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(bookId);
     }

@@ -1,5 +1,6 @@
 package com.amazon.ata.kindlepublishingservice.activity;
 
+import com.amazon.ata.kindlepublishingservice.controllers.activity.GetBookActivity;
 import com.amazon.ata.recommendationsservice.types.BookGenre;
 import com.amazon.ata.kindlepublishingservice.models.Book;
 import com.amazon.ata.kindlepublishingservice.models.requests.GetBookRequest;
