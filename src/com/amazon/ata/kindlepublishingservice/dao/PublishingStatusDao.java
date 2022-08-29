@@ -1,8 +1,11 @@
 package com.amazon.ata.kindlepublishingservice.dao;
 
+import com.amazon.ata.kindlepublishingservice.dynamodb.models.CatalogItemVersion;
 import com.amazon.ata.kindlepublishingservice.dynamodb.models.PublishingStatusItem;
 import com.amazon.ata.kindlepublishingservice.enums.PublishingRecordStatus;
+import com.amazon.ata.kindlepublishingservice.exceptions.BookNotFoundException;
 import com.amazon.ata.kindlepublishingservice.exceptions.PublishingStatusNotFoundException;
+import com.amazon.ata.kindlepublishingservice.models.PublishingStatusRecord;
 import com.amazon.ata.kindlepublishingservice.utils.KindlePublishingUtils;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -19,6 +22,7 @@ public class PublishingStatusDao {
 
     private static final String ADDITIONAL_NOTES_PREFIX = " Additional Notes: ";
     private final DynamoDBMapper dynamoDbMapper;
+
 
     /**
      * Instantiates a new PublishingStatusDao object.
@@ -43,6 +47,31 @@ public class PublishingStatusDao {
                                                     PublishingRecordStatus publishingRecordStatus,
                                                     String bookId) {
         return setPublishingStatus(publishingRecordId, publishingRecordStatus, bookId, null);
+    }
+
+
+    public List<PublishingStatusItem>  getPublishingStatus(String publishingStatusId) throws PublishingStatusNotFoundException{
+
+        PublishingStatusItem item = new PublishingStatusItem();
+        item.setPublishingRecordId(publishingStatusId);
+
+
+
+        //convert list of PublishingStatusItem to PublishingStatusRecords like in getbookactivity.bookrecommendation
+
+        DynamoDBQueryExpression<PublishingStatusItem> queryExpression = new DynamoDBQueryExpression()
+                .withHashKeyValues(item)
+                .withScanIndexForward(false);
+                //.withLimit(1);
+
+
+            List<PublishingStatusItem> results = dynamoDbMapper.query(PublishingStatusItem.class, queryExpression);
+
+
+        if (results.isEmpty()) {
+            throw new PublishingStatusNotFoundException("Publishing Status Not Found");
+        }
+        return results;//.get(0);
     }
 
     /**

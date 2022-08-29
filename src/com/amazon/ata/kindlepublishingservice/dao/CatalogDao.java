@@ -107,4 +107,23 @@ public class CatalogDao {
         return results.get(0);
     }
 
+    public boolean validateBookExists(String bookId){
+
+        if(bookId==null || bookId.isEmpty()){ return false; }
+
+        CatalogItemVersion book = new CatalogItemVersion();
+        book.setBookId(bookId);
+
+        DynamoDBQueryExpression<CatalogItemVersion> queryExpression = new DynamoDBQueryExpression()
+                .withHashKeyValues(book)
+                .withScanIndexForward(false)
+                .withLimit(1);
+
+        List<CatalogItemVersion> results = dynamoDbMapper.query(CatalogItemVersion.class, queryExpression);
+        if (results.isEmpty()) {
+            throw new BookNotFoundException("Book not found");
+        }
+        return false;
+    }
+
 }
