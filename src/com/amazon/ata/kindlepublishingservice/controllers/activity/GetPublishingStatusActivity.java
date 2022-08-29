@@ -28,6 +28,9 @@ public class GetPublishingStatusActivity {
     public GetPublishingStatusResponse execute(GetPublishingStatusRequest publishingStatusRequest) {
         List<PublishingStatusItem> catalogItem = publishingStatusDao.getPublishingStatus(publishingStatusRequest.getPublishingRecordId());
 
+
+
+        
         return GetPublishingStatusResponse.builder()
                 .withPublishingStatusHistory(PublishingStatusConverter.toPublishingStatusRecordList(catalogItem))
                 .build();
