@@ -2,6 +2,7 @@ package com.amazon.ata.kindlepublishingservice.controllers.activity;
 
 import com.amazon.ata.kindlepublishingservice.clients.RecommendationsServiceClient;
 import com.amazon.ata.kindlepublishingservice.converters.CatalogItemConverter;
+import com.amazon.ata.kindlepublishingservice.exceptions.BookNotFoundException;
 import com.amazon.ata.recommendationsservice.types.BookGenre;
 import com.amazon.ata.kindlepublishingservice.models.requests.GetBookRequest;
 import com.amazon.ata.kindlepublishingservice.models.response.GetBookResponse;
@@ -46,12 +47,16 @@ public class GetBookActivity {
      */
 
     public GetBookResponse execute(final GetBookRequest request) {
+
+
         CatalogItemVersion catalogItem = catalogDao.getBookFromCatalog(request.getBookId());
-        List<BookRecommendation> recommendations = recommendationServiceClient.getBookRecommendations(
-            BookGenre.valueOf(catalogItem.getGenre().name()));
-        return GetBookResponse.builder()
-            .withBook(CatalogItemConverter.toBook(catalogItem))
-            .withRecommendations(RecommendationsCoralConverter.toCoral(recommendations))
-            .build();
+            List<BookRecommendation> recommendations = recommendationServiceClient.getBookRecommendations(
+                    BookGenre.valueOf(catalogItem.getGenre().name()));
+            return GetBookResponse.builder()
+                    .withBook(CatalogItemConverter.toBook(catalogItem))
+                    .withRecommendations(RecommendationsCoralConverter.toCoral(recommendations))
+                    .build();
+
+
     }
 }

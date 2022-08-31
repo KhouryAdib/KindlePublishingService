@@ -1,5 +1,6 @@
 package com.amazon.ata.kindlepublishingservice.dagger;
 
+import com.amazon.ata.kindlepublishingservice.dao.CatalogDao;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
@@ -22,5 +23,11 @@ public class DataAccessModule {
             .build();
 
         return new DynamoDBMapper(amazonDynamoDBClient);
+    }
+
+    @Provides
+    @Singleton
+    public CatalogDao provideCatalogDao(){
+        return new CatalogDao(provideDynamoDBMapper());
     }
 }

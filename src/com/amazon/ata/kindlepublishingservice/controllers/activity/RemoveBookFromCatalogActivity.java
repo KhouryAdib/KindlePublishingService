@@ -35,12 +35,10 @@ public class RemoveBookFromCatalogActivity {
     public RemoveBookFromCatalogResponse execute(final RemoveBookFromCatalogRequest request) {
      //   final BookPublishRequest bookPublishRequest = BookPublishRequestConverter.toBookPublishRequest(request);
 
-        RemoveBookFromCatalogResponse item =  catalogDao.removeBookFromCatalog(request.getBookId());
-
-
+          catalogDao.removeBookFromCatalog(request.getBookId());
 
         return RemoveBookFromCatalogResponse.builder()
-                .withPublishingRecordId(item.getPublishingRecordId())
+                .withPublishingRecordId(request.getBookId())
                 .build();
         //catalogDao.removeBookFromCatalog(request.getBookId());
     }

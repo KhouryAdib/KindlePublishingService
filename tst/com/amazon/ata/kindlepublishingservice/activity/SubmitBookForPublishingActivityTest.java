@@ -1,6 +1,7 @@
 package com.amazon.ata.kindlepublishingservice.activity;
 
 import com.amazon.ata.kindlepublishingservice.controllers.activity.SubmitBookForPublishingActivity;
+import com.amazon.ata.kindlepublishingservice.dao.CatalogDao;
 import com.amazon.ata.recommendationsservice.types.BookGenre;
 import com.amazon.ata.kindlepublishingservice.models.requests.SubmitBookForPublishingRequest;
 import com.amazon.ata.kindlepublishingservice.models.response.SubmitBookForPublishingResponse;
@@ -27,6 +28,7 @@ public class SubmitBookForPublishingActivityTest {
 
     @Mock
     private PublishingStatusDao publishingStatusDao;
+    private CatalogDao catalogDao;
 
     @InjectMocks
     private SubmitBookForPublishingActivity activity;

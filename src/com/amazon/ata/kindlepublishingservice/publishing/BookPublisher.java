@@ -38,7 +38,7 @@ public class BookPublisher {
     /**
      * Start publishing books.
      */
-    public void start() {
+public void start() {
         if (isRunning) {
             return;
         }

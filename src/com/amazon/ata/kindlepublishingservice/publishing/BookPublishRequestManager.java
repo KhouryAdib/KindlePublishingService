@@ -3,14 +3,15 @@ package com.amazon.ata.kindlepublishingservice.publishing;
 import javax.inject.Inject;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class BookPublishRequestManager {
 
     private Queue<BookPublishRequest> requestQueue;
 
     @Inject
-    public BookPublishRequestManager() {
-    this.requestQueue = new LinkedList<BookPublishRequest>();
+    public BookPublishRequestManager(ConcurrentLinkedQueue<BookPublishRequest> queue) {
+    this.requestQueue = queue;
     }
 
     public void addBookPublishRequest(BookPublishRequest request){
@@ -19,10 +20,6 @@ public class BookPublishRequestManager {
 
     public BookPublishRequest getBookPublishRequestToProcess() {
 
-        if (requestQueue.peek().equals(null)) {
-            return null;
-        } else {
-            return requestQueue.remove();
-            }
+        return requestQueue.poll();
         }
     }

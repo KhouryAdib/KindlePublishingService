@@ -46,7 +46,7 @@ public class CatalogDao {
     }
 
 
-    public RemoveBookFromCatalogResponse removeBookFromCatalog(String bookId) {
+    public CatalogItemVersion removeBookFromCatalog(String bookId) {
      /*-   CatalogItemVersion book = new CatalogItemVersion();
         book.setBookId(bookId);
 
@@ -67,26 +67,13 @@ public class CatalogDao {
 
 
       */
-        CatalogItemVersion book = getLatestVersionOfBook(bookId);
 
-        if(book.isInactive()){
-            throw new BookNotFoundException("Book already removed");
-        }
-
-
-        CatalogItemVersion item = new CatalogItemVersion();
+        CatalogItemVersion item = getLatestVersionOfBook(bookId);
         item.setInactive(true);
-        item.setBookId(bookId);
-        item.setAuthor(book.getAuthor());
-        item.setGenre(book.getGenre());
-        item.setText(book.getText());
-        item.setTitle(book.getTitle());
-        item.setVersion(book.getVersion());
-        item.setBookId(bookId);
+
         dynamoDbMapper.save(item);
 
-        return RemoveBookFromCatalogResponse.builder().withPublishingRecordId(bookId).build();
-
+        return item;
 
     }
 
@@ -126,4 +113,51 @@ public class CatalogDao {
         return false;
     }
 
+    public CatalogItemVersion createOrUpdateBook(KindleFormattedBook book){
+        System.out.println("createOrUpdateBook: start");
+
+     //   CatalogItemVersion bookInCatalog = new CatalogItemVersion();
+
+       //      bookInCatalog = getLatestVersionOfBook(book.getBookId());
+
+
+        if( book.getBookId()==null){
+            System.out.println("Creating Book");
+            String bookId = KindlePublishingUtils.generateBookId();
+            CatalogItemVersion item = new CatalogItemVersion();
+            item.setInactive(false);
+            item.setBookId(bookId);
+            item.setAuthor(book.getAuthor());
+            item.setGenre(book.getGenre());
+            item.setText(book.getText());
+            item.setTitle(book.getTitle());
+            item.setVersion(1);
+            dynamoDbMapper.save(item);
+            System.out.println("createOrUpdateBook: New item created end");
+            return item;
+
+        } else {
+
+            System.out.println("Updating Book");
+            String bookId = KindlePublishingUtils.generateBookId();
+
+            CatalogItemVersion item = getLatestVersionOfBook(book.getBookId());
+            removeBookFromCatalog(item.getBookId());
+            item.setBookId(bookId);
+            item.setAuthor(book.getAuthor());
+            item.setGenre(book.getGenre());
+            item.setText(book.getText());
+            item.setTitle(book.getTitle());
+
+            item.setVersion(item.getVersion() + 1);
+
+            item.setInactive(false);
+            dynamoDbMapper.save(item);
+
+            System.out.println("createOrUpdateBook: Updated item end");
+            return item;
+        }
+
+
+    }
 }
